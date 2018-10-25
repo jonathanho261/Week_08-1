@@ -5,6 +5,7 @@
 //  Import the express library
 const express = require('express')
 var bodyParser = require('body-parser')
+var request = require('request');
 
 //  Create an instance of express
 const app = express()
@@ -23,7 +24,18 @@ app.post("/", (req, res) => {
   let firstname = req.body.firstname
   let lastname = req.body.lastname
   let message = "Hello, " + firstname + " " + lastname
-  res.send(message)
+
+
+url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=bee&limit=1&format=json"
+request
+  .get(url)
+  .on('response', function(response) {
+    console.log(response.statusCode) // 200
+    console.log(response.headers['content-type']) // 'image/png'
+    console.log(response.dict)
+    res.send(response)
+  })
+  // res.send(message)
 })
 
 //  Start Express Web Server i.e. start listing on the port you defined
